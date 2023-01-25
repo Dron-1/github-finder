@@ -8,6 +8,7 @@ import NotFound from './pages/NotFound';
 function App() {
   return (
     <Router>
+      {/* h-screen means to cover full screen horizontally */}
       <div className='flex flex-col justify-between h-screen'>
         <Navbar />
         <main className='container mx-auto px-3 pb-12'>

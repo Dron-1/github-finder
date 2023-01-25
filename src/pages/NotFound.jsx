@@ -1,4 +1,4 @@
-/*| Hero is a component for displaying a large box or image with a title and description. |*/
+/*| Hero is a component for displaying a large box or image with a title and description.(daisyui) |*/
 import {FaHome} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
