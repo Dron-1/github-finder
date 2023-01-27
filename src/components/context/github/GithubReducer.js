@@ -11,6 +11,18 @@ const githubReducer = (state, action) => {
                 loading: false,
                 // updating the state, updating users(empty array) with github users and changing loading to false
             }
+
+        case 'SET-LOADING' :
+            return{
+                ...state,
+                loading : true,
+            }
+
+        case 'CLEAR-USERS' :
+            return{
+                ...state,
+                users: [],
+            }
         default:
             return state
     }

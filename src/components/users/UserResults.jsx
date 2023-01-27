@@ -1,29 +1,18 @@
-import {useEffect, useContext} from 'react'
+import { useContext } from 'react'
 import Spinner from '../layout/Spinner'
 import UserItems from './UserItems';
 import GithubContext from '../context/github/GithubContext'
 
 /*| Using personal github token  increase the request rate-limit from 10req/min to 30req/min |*/
 function UserResults() {
-//   const [users,setUsers] = useState([])
-//   const [loading, setLoading] = useState(true)
-  const {users, loading, getUsersList} = useContext(GithubContext);
+  // const {users, loading, getUsersList} = useContext(GithubContext);
 
-  useEffect(()=>{
-    getUsersList();
-  }, [])  
+  /*| Deleting this useEffect coz we have getUsersList only for testing purpose |*/
+  // useEffect(()=>{
+  //   getUsersList();
+  // }, [])  
 
-//   const getUsersList = async () =>
-//   {
-//     const response = await fetch(`${process.env.REACT_APP_GITHUB_API}/users`,{
-//         headers : {
-//             Authorization : `token ${process.env.REACT_APP_GITHUB_TOKEN}`
-//         }
-//     })
-//     const data = await response.json()
-//     setUsers(data);
-//     setLoading(false);
-//   } 
+  const { users, loading } = useContext(GithubContext);
 
   if(!loading)
   {
