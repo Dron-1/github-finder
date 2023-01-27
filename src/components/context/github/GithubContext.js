@@ -1,7 +1,3 @@
-/*| adding reducers to manage global states instead of useState |*/
-/*| in comments is when we use hook->useState, without comments is when we use hook->useReducer() |*/
-
-// import { createContext, useState } from "react";
 import { createContext, useReducer } from "react";
 import githubReducer from "./GithubReducer";
 
@@ -15,43 +11,61 @@ export const GithubProvider = ({children}) => {
     //added for reducer
     const initialState = {
         users: [],
-        loading: true,
+        loading: false,
     }
-    // const [users,setUsers] = useState([])                   //| not required while using reducer
-    // const [loading, setLoading] = useState(true)            //| not required while using reducer
 
-    /*| syntax-> useReducer(<reducer>, <initialState>) |*/
-    /*| The useReducer Hook returns the current state and a dispatch method. |*/
-    /*| dispatch method is used to set the action object, dispatch is used to setState |*/
     const [state, dispatch] = useReducer(githubReducer,initialState)
 
-    const getUsersList = async () =>
-    {
-        const response = await fetch(`${GITHUB_API}/users`,{
-            headers : {
-            Authorization : `token ${GITHUB_TOKEN}`
-            }
+    //this function is not required in project (Only for Testing Purposes)
+    // const getUsersList = async () =>
+    // {
+    //     setLoading(); 
+    //     const response = await fetch(`${GITHUB_API}/users`);
+
+    //     const data = await response.json()
+    //     console.log(data);
+
+    //     //dispatch calls the reducer function and sending type is important because reducer works on this action type
+    //     dispatch({
+    //         type: 'GET_USERS',
+    //         payload: data
+    //     })
+    // }
+    const searchUsers = async(text) => {
+        setLoading()
+        const params = new URLSearchParams({
+            q: text
         })
 
-    const data = await response.json()
-    console.log(data);
+        const response = await fetch(`${GITHUB_API}/search/users?${params}`)
 
-    // setUsers(data);                     //| not required while using reducer
-    // setLoading(false);                  //| not required while using reducer
+        /*| response is an object now, which has property items that contains list of matching users |*/
+        /*| destructuring items from response object |*/
+        const { items } = await response.json()
 
+        dispatch({
+            type: 'GET_USERS',
+            payload : items
+        })
+    } 
 
-    //dispatch calls the reducer function and sending type is important because reducer works on this action type
+  const clearUsers = () => {
     dispatch({
-        type: 'GET_USERS',
-        payload: data
+        type: 'CLEAR-USERS',
     })
-  } 
+  }  
+
+  //function to setLoading to true
+  const setLoading = () => {
+    dispatch({type:'SET-LOADING'})
+  }
 
   return (
     <GithubContext.Provider value = {{
         users : state.users,
         loading: state.loading,
-        getUsersList,
+        searchUsers,
+        clearUsers
     }}>
         {children}
     </GithubContext.Provider>
