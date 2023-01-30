@@ -11,26 +11,13 @@ export const GithubProvider = ({children}) => {
     //added for reducer
     const initialState = {
         users: [],
+        user: {},
         loading: false,
     }
 
     const [state, dispatch] = useReducer(githubReducer,initialState)
 
-    //this function is not required in project (Only for Testing Purposes)
-    // const getUsersList = async () =>
-    // {
-    //     setLoading(); 
-    //     const response = await fetch(`${GITHUB_API}/users`);
-
-    //     const data = await response.json()
-    //     console.log(data);
-
-    //     //dispatch calls the reducer function and sending type is important because reducer works on this action type
-    //     dispatch({
-    //         type: 'GET_USERS',
-    //         payload: data
-    //     })
-    // }
+    //function to search users based on text
     const searchUsers = async(text) => {
         setLoading()
         const params = new URLSearchParams({
@@ -60,11 +47,35 @@ export const GithubProvider = ({children}) => {
     dispatch({type:'SET-LOADING'})
   }
 
+  //function to show details of single User
+  //TODO: write function to Get DEtails per user
+  const getUser = async(login) => {
+    setLoading();
+
+    const response = await fetch(`${GITHUB_API}/users/${login}`) ;
+
+    if(response.status === 404)
+    {
+      window.location = '/notfound';
+    }
+    else
+    {
+      const data = await response.json();
+
+      dispatch({
+        type: 'GET-USER',
+        payload: data,
+      })
+    }
+  }
+
   return (
     <GithubContext.Provider value = {{
         users : state.users,
+        user : state.user,
         loading: state.loading,
         searchUsers,
+        getUser,
         clearUsers
     }}>
         {children}
