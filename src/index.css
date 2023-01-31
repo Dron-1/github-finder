@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* overided these two classes to fix the border issue */
+.custom-card-image .card.image-full:before{
+    border-radius: 0.5rem;
+    opacity: 0.55;
+}
