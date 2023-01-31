@@ -48,7 +48,7 @@ export const GithubProvider = ({children}) => {
   }
 
   //function to show details of single User
-  //TODO: write function to Get DEtails per user
+
   const getUser = async(login) => {
     setLoading();
 
