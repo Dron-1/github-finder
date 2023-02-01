@@ -12,6 +12,7 @@ export const GithubProvider = ({children}) => {
     const initialState = {
         users: [],
         user: {},
+        repos: [],
         loading: false,
     }
 
@@ -48,7 +49,6 @@ export const GithubProvider = ({children}) => {
   }
 
   //function to show details of single User
-
   const getUser = async(login) => {
     setLoading();
 
@@ -69,14 +69,34 @@ export const GithubProvider = ({children}) => {
     }
   }
 
+  // function to get array of user repos
+  const getUserRepos = async (login) => {
+    setLoading();
+
+    const params = new URLSearchParams({
+      sort: 'created',
+      per_page: 10
+    })
+
+    const response = await fetch(`${GITHUB_API}/users/${login}/repos?${params}`);
+    const data = await response.json();
+    
+    dispatch({
+      type: 'GET-USER-REPOS',
+      payload: data,
+    })
+  }
+
   return (
     <GithubContext.Provider value = {{
         users : state.users,
         user : state.user,
         loading: state.loading,
+        repos: state.repos,
         searchUsers,
         getUser,
-        clearUsers
+        clearUsers,
+        getUserRepos,
     }}>
         {children}
     </GithubContext.Provider>
