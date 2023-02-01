@@ -3,13 +3,15 @@ import {useContext, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../components/layout/Spinner';
 import GithubContext from '../components/context/github/GithubContext'
+import RepoList from '../components/repos/RepoList';
 
 function User() {
-  const {user, getUser, loading} = useContext(GithubContext);
+  const {user, repos, getUser, loading, getUserRepos} = useContext(GithubContext);
   const params = useParams()
 
   useEffect(()=>{
-    getUser(params.login)
+    getUser(params.login);
+    getUserRepos(params.login);
   },[])
 
   /*| Destructuring |*/
@@ -70,6 +72,7 @@ function User() {
                   <a 
                     href={html_url} 
                     target = '_blank'
+                    rel='noreferrer'
                     className='btn btn-outline' 
                   >
                     Visit Github Profile
@@ -169,6 +172,7 @@ function User() {
               </div>
             </div>
           </div>
+          <RepoList repos = {repos}/>
         </div>
     </>
   )
