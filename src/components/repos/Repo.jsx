@@ -13,16 +13,16 @@ function Repo({ repo }) {
             </h3>
             <p className='mb-3'>{description}</p>
             <div>
-                <div className="badge badge-info badge-lg mr-2">
-                    <FaEye className='mr-2' />{watchers_count}
+                <div className="badge badge-info badge-lg mr-2" title='watchers'>
+                    <FaEye className='mr-2'/>{watchers_count}
                 </div>
-                <div className="badge badge-success badge-lg mr-2">
+                <div className="badge badge-success badge-lg mr-2" title='stargazers'>
                     <FaStar className='mr-2' />{stargazers_count}
                 </div>
-                <div className="badge badge-error badge-lg mr-2">
+                <div className="badge badge-error badge-lg mr-2" title='open-issues'>
                     <FaInfo className='mr-2' />{open_issues}
                 </div>
-                <div className="badge badge-warning badge-lg mr-2">
+                <div className="badge badge-warning badge-lg mr-2" title='forks'>
                     <FaUtensils className='mr-2' />{forks}
                 </div>
             </div>
