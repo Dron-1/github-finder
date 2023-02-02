@@ -12,19 +12,27 @@ const githubReducer = (state, action) => {
                 // updating the state, updating users(empty array) with github users and changing loading to false
             }
 
-        case 'GET-USER' :
-            return {
-                ...state,
-                user: action.payload,
-                loading: false,
-            }
+        // case 'GET-USER' :
+        //     return {
+        //         ...state,
+        //         user: action.payload,
+        //         loading: false,
+        //     }
     
-        case 'GET-USER-REPOS' :
+        // case 'GET-USER-REPOS' :
+        //     return{
+        //         ...state,
+        //         repos: action.payload,
+        //         loading: false,
+        //     }    
+        //MERGED------------
+        case 'GET-USER-AND-REPOS' :
             return{
                 ...state,
-                repos: action.payload,
+                user: action.payload.user,
+                repos: action.payload.repos,
                 loading: false,
-            }    
+            }
             
         case 'SET-LOADING' :
             return{

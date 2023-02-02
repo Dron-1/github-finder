@@ -5,13 +5,6 @@ import GithubContext from '../context/github/GithubContext'
 
 /*| Using personal github token  increase the request rate-limit from 10req/min to 30req/min |*/
 function UserResults() {
-  // const {users, loading, getUsersList} = useContext(GithubContext);
-
-  /*| Deleting this useEffect coz we have getUsersList only for testing purpose |*/
-  // useEffect(()=>{
-  //   getUsersList();
-  // }, [])  
-
   const { users, loading } = useContext(GithubContext);
 
   if(!loading)

@@ -3,9 +3,6 @@ import githubReducer from "./GithubReducer";
 
 const GithubContext = createContext();
 
-const GITHUB_API = process.env.REACT_APP_GITHUB_API;
-const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
-
 export const GithubProvider = ({children}) => {
 
     //added for reducer
@@ -18,69 +15,17 @@ export const GithubProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(githubReducer,initialState)
 
-  /*| deleted search users func |*/
+  /*| deleted search users func and added to GithubActions.js|*/
+  
+  /*| deleted clearUsers func coz now we can clearUsers directly by using dispatch |*/
+  /*| deleted getUser, getUserRepos funcs and added to GithubActions.js|*/
 
-  const clearUsers = () => {
-    dispatch({
-        type: 'CLEAR-USERS',
-    })
-  }  
-
-  //function to setLoading to true
-  const setLoading = () => {
-    dispatch({type:'SET-LOADING'})
-  }
-
-  //function to show details of single User
-  const getUser = async(login) => {
-    setLoading();
-
-    const response = await fetch(`${GITHUB_API}/users/${login}`) ;
-
-    if(response.status === 404)
-    {
-      window.location = '/notfound';
-    }
-    else
-    {
-      const data = await response.json();
-
-      dispatch({
-        type: 'GET-USER',
-        payload: data,
-      })
-    }
-  }
-
-  // function to get array of user repos
-  const getUserRepos = async (login) => {
-    setLoading();
-
-    const params = new URLSearchParams({
-      sort: 'created',
-      per_page: 10
-    })
-
-    const response = await fetch(`${GITHUB_API}/users/${login}/repos?${params}`);
-    const data = await response.json();
-    
-    dispatch({
-      type: 'GET-USER-REPOS',
-      payload: data,
-    })
-  }
-
+  /*| deleted setLoading func coz now we can set-loading directly by using dispatch |*/
+  
   return (
     <GithubContext.Provider value = {{
-        // users : state.users,
-        // user : state.user,
-        // loading: state.loading,
-        // repos: state.repos,
         ...state,                      /*| ...state means = users, user, loading, repos |*/
         dispatch,
-        getUser,
-        clearUsers,
-        getUserRepos,
     }}>
         {children}
     </GithubContext.Provider>

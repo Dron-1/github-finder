@@ -2,33 +2,49 @@
 
 /*| This is a Actions files basically collection of functions which can be use |*/
 /*| in other components. These functions are now out of Context file so that  |*/
-/*| context file can look clean and more understandable |*/
+/*| context file can look clean and more understandable |*/ 
+
+
+/*| Using Axios to make request |*/
+
+import axios from 'axios'
 const GITHUB_API = process.env.REACT_APP_GITHUB_API;
 const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 
-//function to search users based on text
-//export keyword must be added now.
+const github = axios.create({
+    baseURL: GITHUB_API,
+    //headers: {Authorization: `token ${GITHUB_TOKEN}`}
+});
+
+
 export const searchUsers = async(text) => {
     //setLoading()          //can not be used here since it is not defined in this file
     const params = new URLSearchParams({
         q: text
     })
 
-    const response = await fetch(`${GITHUB_API}/search/users?${params}`)
+    /*| without axios |*/
+    // const response = await fetch(`${GITHUB_API}/search/users?${params}`)
+    // const { items } = await response.json()
 
-    /*| response is an object now, which has property items that contains list of matching users |*/
-    /*| destructuring items from response object |*/
-    const { items } = await response.json()
-
-    /*| can not be used here because it is not defined here, is defined in context file. |*/
-    // dispatch({
-    //     type: 'GET_USERS',
-    //     payload : items
-    // })
-
-    return items;
+    /*| with axios |*/
+    const response = await github.get(`/search/users?${params}`)
+    return response.data.items;
 } 
 
+/*| Merging getUser and getUserRepos func |*/
+
+export const getUserAndRepos = async(login) => {
+    const [ user, repos ] = await Promise.all([
+        github.get(`/users/${login}`),
+        github.get(`/users/${login}/repos`)
+    ])
+
+    return { user: user.data, repos: repos.data}
+} 
+
+/*| un-collapse to see the old functions |*/
+/* 
 //function to show details of single User
 export const getUser = async(login) => {
     //setLoading();
@@ -68,4 +84,4 @@ export const getUserRepos = async (login) => {
     //   payload: data,
     // })
     return data;
-}
+} */

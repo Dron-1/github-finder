@@ -4,14 +4,34 @@ import { useParams, Link } from 'react-router-dom';
 import Spinner from '../components/layout/Spinner';
 import GithubContext from '../components/context/github/GithubContext'
 import RepoList from '../components/repos/RepoList';
+import { getUserAndRepos } from '../components/context/github/GithubActions';
 
+// in comments is before GithubAction
 function User() {
-  const {user, repos, getUser, loading, getUserRepos} = useContext(GithubContext);
+  //const {user, repos, getUser, loading, getUserRepos} = useContext(GithubContext);
+  const {user, repos, loading, dispatch} = useContext(GithubContext);
   const params = useParams()
 
+  // useEffect(()=>{
+  //   getUser(params.login);
+  //   getUserRepos(params.login);
+  // },[])
   useEffect(()=>{
-    getUser(params.login);
-    getUserRepos(params.login);
+    const getUserData = async() => {
+      // dispatch({type: 'SET-LOADING'});
+      // const userData = await getUser(params.login);
+      // dispatch({type: 'GET-USER', payload: userData});
+
+      // const userRepoData = await getUserRepos(params.login);
+      // dispatch({type: 'GET-USER-REPOS', payload: userRepoData});
+
+      /*| Using merged function |*/
+      dispatch({type: 'SET-LOADING'});
+      const userData = await getUserAndRepos(params.login);
+      dispatch({type: 'GET-USER-AND-REPOS', payload: userData});
+    }
+
+    getUserData();
   },[])
 
   /*| Destructuring |*/

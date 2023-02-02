@@ -1,12 +1,12 @@
 import {useState,useContext} from 'react'
 import GithubContext from '../context/github/GithubContext';
 import AlertContext from '../context/alert/AlertContext';
-import {GithubActions, searchUsers} from '../context/github/GithubActions';
+import {searchUsers} from '../context/github/GithubActions';
 
 function UserSearch() {
   const [text,setText] = useState('');
 //  const { users, searchUsers, clearUsers } = useContext(GithubContext);
-  const {users, clearUsers, dispatch} = useContext(GithubContext);
+  const {users, dispatch} = useContext(GithubContext);
   const { setAlert } = useContext(AlertContext);
 
 
@@ -66,7 +66,7 @@ function UserSearch() {
             <div>
             <button 
                 className='btn btn-ghost btn-lg'
-                onClick={clearUsers}    
+                onClick={() => dispatch({type:'CLEAR-USERS'})}    
             >
                 Clear
             </button>
