@@ -18,24 +18,7 @@ export const GithubProvider = ({children}) => {
 
     const [state, dispatch] = useReducer(githubReducer,initialState)
 
-    //function to search users based on text
-    const searchUsers = async(text) => {
-        setLoading()
-        const params = new URLSearchParams({
-            q: text
-        })
-
-        const response = await fetch(`${GITHUB_API}/search/users?${params}`)
-
-        /*| response is an object now, which has property items that contains list of matching users |*/
-        /*| destructuring items from response object |*/
-        const { items } = await response.json()
-
-        dispatch({
-            type: 'GET_USERS',
-            payload : items
-        })
-    } 
+  /*| deleted search users func |*/
 
   const clearUsers = () => {
     dispatch({
@@ -89,11 +72,12 @@ export const GithubProvider = ({children}) => {
 
   return (
     <GithubContext.Provider value = {{
-        users : state.users,
-        user : state.user,
-        loading: state.loading,
-        repos: state.repos,
-        searchUsers,
+        // users : state.users,
+        // user : state.user,
+        // loading: state.loading,
+        // repos: state.repos,
+        ...state,                      /*| ...state means = users, user, loading, repos |*/
+        dispatch,
         getUser,
         clearUsers,
         getUserRepos,
