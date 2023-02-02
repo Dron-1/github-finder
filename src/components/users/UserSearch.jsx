@@ -1,24 +1,37 @@
 import {useState,useContext} from 'react'
 import GithubContext from '../context/github/GithubContext';
 import AlertContext from '../context/alert/AlertContext';
+import {GithubActions, searchUsers} from '../context/github/GithubActions';
 
 function UserSearch() {
   const [text,setText] = useState('');
-  const { users, searchUsers, clearUsers } = useContext(GithubContext);
+//  const { users, searchUsers, clearUsers } = useContext(GithubContext);
+  const {users, clearUsers, dispatch} = useContext(GithubContext);
   const { setAlert } = useContext(AlertContext);
+
 
   const handleChange = (e) => {
     setText(e.target.value);
   }
 
-  const handleSubmit = (e) => {
+/*| has to add "async" coz await is used with searchUsers() fun |*/
+  const handleSubmit = async (e) => {
     e.preventDefault();                                                                 
     if(text === '')
     {
         setAlert("Please enter something!","error")
     }
     else{
-        searchUsers(text)
+        //searchUsers(text)  
+        /*| this above statement is changed by below dispatch,searchUsers, dispatch func |*/
+
+        dispatch({type: 'SET-LOADING'})
+        const users = await searchUsers(text);
+        dispatch({
+            type: 'GET_USERS',
+            payload: users,
+        });
+
         setText('')
     }
   }
